@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface FlightInfoService {
 
-    void saveFlightInfo(String key, FlightInfoDTO flightInfoDTO);
+    void save(final String key, final FlightInfoDTO flightInfoDTO);
 
-    Optional<FlightInfoDTO> obtainFlightInfo(String tailNumber, String flightNumber);
+    Optional<FlightInfoDTO> getByTailNumberAndFlightNumber(final String tailNumber, final String flightNumber);
 
     List<FlightInfoDTO> getAll();
 

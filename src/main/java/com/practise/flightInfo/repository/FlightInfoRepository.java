@@ -5,7 +5,7 @@ import com.practise.flightInfo.model.FlightInfoDTO;
 import java.util.List;
 import java.util.Optional;
 
-public interface FlightInfoRepositoy {
+public interface FlightInfoRepository {
 
     void save(String key, FlightInfoDTO flightInfoDTO);
 

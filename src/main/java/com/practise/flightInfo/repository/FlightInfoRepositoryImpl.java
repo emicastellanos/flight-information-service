@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class FlightInfoRepositoyImpl implements FlightInfoRepositoy {
+public class FlightInfoRepositoryImpl implements FlightInfoRepository {
 
     @Autowired
     private RedisTemplate redisTemplate;
