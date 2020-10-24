@@ -65,7 +65,7 @@ public class FlightInfoServiceImpl implements FlightInfoService {
 
         return Optional.ofNullable(flightsResponse)
                 .map(Collection::parallelStream)
-                .get()
+                .orElse(Stream.empty())
                 .filter(flightResponse -> flightResponse.getFlightNumber().equals(flightNumber))
                 .findFirst();
     }
