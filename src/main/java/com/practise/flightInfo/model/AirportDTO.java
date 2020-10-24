@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @RedisHash("Airport")
 //@Data
@@ -51,5 +52,20 @@ public class AirportDTO implements Serializable {
 
     public void setAirportName(String airportName) {
         this.airportName = airportName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AirportDTO)) return false;
+        AirportDTO that = (AirportDTO) o;
+        return Objects.equals(getCode(), that.getCode()) &&
+                Objects.equals(getCity(), that.getCity()) &&
+                Objects.equals(getAirportName(), that.getAirportName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCode(), getCity(), getAirportName());
     }
 }
