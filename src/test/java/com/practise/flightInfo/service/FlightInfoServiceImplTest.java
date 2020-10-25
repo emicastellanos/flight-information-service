@@ -1,5 +1,7 @@
 package com.practise.flightInfo.service;
 
+import com.practise.flightInfo.mapper.FlightInfoMapper;
+import com.practise.flightInfo.model.dto.AirportDTO;
 import com.practise.flightInfo.model.dto.FlightInfoDTO;
 import com.practise.flightInfo.model.entity.FlightInfo;
 import com.practise.flightInfo.repository.FlightInfoRepository;
@@ -21,6 +23,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+/**
+ * Unit tests for {@link FlightInfoServiceImpl}.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class FlightInfoServiceImplTest {
     private static final String TAIL_NUMBER = "tailNumber";
@@ -36,6 +41,9 @@ public class FlightInfoServiceImplTest {
     @InjectMocks
     private FlightInfoServiceImpl flightInfoService;
 
+    /**
+     * Test saving flight info should works ok.
+     */
     @Test
     public void shouldSaveFlightInfo() {
         //given
@@ -50,12 +58,14 @@ public class FlightInfoServiceImplTest {
         verify(flightInfoRepository).save(KEY, flightInfoToBeSaved);
     }
 
+    /**
+     * Test When flight information already exists in database it should be obtained from there.
+     */
     @Test
     public void shouldGetFlightInfoByTailAndFlightNumber_WhenIsPresentInCache() {
         //given
         FlightInfoDTO flightInfoDto = getOneFlightInfoDto();
-        FlightInfo flightInfoFromCache = new FlightInfo();
-        BeanUtils.copyProperties(flightInfoDto, flightInfoFromCache);
+        FlightInfo flightInfoFromCache = FlightInfoMapper.makeFlightInfoEntityFromDTO(flightInfoDto);
 
         given(flightInfoRepository.getFlightByKey(KEY))
                 .willReturn(Optional.of(flightInfoFromCache));
@@ -64,30 +74,36 @@ public class FlightInfoServiceImplTest {
                 flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER);
         //then
         assert (serviceResponse.isPresent());
+        verify(flightInfoRepository).getFlightByKey(KEY);
         Assertions.assertThat(serviceResponse.get()).isEqualTo(flightInfoDto);
     }
 
+    /**
+     * Test When flight information is already persisted in database it shouldn't call any external service.
+     */
     @Test
     public void shouldGetFlightInfoByTailAndFlightNumberNotCallExternalService_WhenIsPresentInCache() {
         //given
         FlightInfoDTO flightInfoDto = getOneFlightInfoDto();
-        FlightInfo flightInfoFromCache = new FlightInfo();
-        BeanUtils.copyProperties(flightInfoDto, flightInfoFromCache);
+        FlightInfo flightInfoFromCache = FlightInfoMapper.makeFlightInfoEntityFromDTO(flightInfoDto);
         given(flightInfoRepository.getFlightByKey(KEY))
                 .willReturn(Optional.of(flightInfoFromCache));
         //when
         Optional<FlightInfoDTO> serviceResponse =
                 flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER);
         //then
-        verify(externalServiceClient, times(0)).getFlightsInformationByTailNumber(anyString());
+        verify(externalServiceClient, times(0))
+                .getFlightsInformationByTailNumber(anyString());
     }
 
+    /**
+     * Test When flight information exists in database it shouldn't try to persist again.
+     */
     @Test
     public void shouldGetFlightInfoByTailAndFlightNumberDoNotSave_WhenIsAlreadyPresentInCache() {
         //given
         FlightInfoDTO flightInfoDto = getOneFlightInfoDto();
-        FlightInfo flightInfoFromCache = new FlightInfo();
-        BeanUtils.copyProperties(flightInfoDto, flightInfoFromCache);
+        FlightInfo flightInfoFromCache = FlightInfoMapper.makeFlightInfoEntityFromDTO(flightInfoDto);
         given(flightInfoRepository.getFlightByKey(KEY))
                 .willReturn(Optional.of(flightInfoFromCache));
         //when
@@ -97,6 +113,9 @@ public class FlightInfoServiceImplTest {
         verify(flightInfoRepository, times(0)).save(anyString(), any(FlightInfo.class));
     }
 
+    /**
+     * Test When flight information does not exist in database it should call an external service once.
+     */
     @Test
     public void shouldGetFlightInfoByTailAndFlightNumberGetInfoFromExternalService_WhenIsNotPresentInCache() {
         //given
@@ -111,10 +130,12 @@ public class FlightInfoServiceImplTest {
                 flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER);
         //then
         assert (serviceResponse.isPresent());
-        verify(externalServiceClient, times(1)).getFlightsInformationByTailNumber(TAIL_NUMBER);
-        Assertions.assertThat(serviceResponse.get()).isEqualTo(flightInfoEntity);
+        verify(externalServiceClient).getFlightsInformationByTailNumber(TAIL_NUMBER);
     }
 
+    /**
+     * Test When flights information is gotten from an external service by tailNumber it should be correctly filtered by flightNumber
+     */
     @Test
     public void shouldGetFlightInfoByTailAndFlightNumberGetInfoCorrectlyFilteredFromExternalService_WhenIsNotPresentInCache() {
         //given
@@ -134,17 +155,17 @@ public class FlightInfoServiceImplTest {
                 flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER);
         //then
         assert (serviceResponse.isPresent());
-        verify(externalServiceClient, times(1)).getFlightsInformationByTailNumber(TAIL_NUMBER);
         Assertions.assertThat(serviceResponse.get()).isEqualTo(flightInfoEntity);
     }
 
+    /**
+     * Test When flight information is gotten from an external service it should be persisted
+     */
     @Test
-    public void shouldGetFlightInfoByTailAndFlightNumberSaveInCache_WhenFlightIsNotPresentInCache() {
+    public void shouldGetFlightInfoByTailAndFlightNumberSaveInCache_WhenFlightInfoIsGottenFromExternalService() {
         //given
         FlightInfoDTO flightInfoDto = getOneFlightInfoDto();
-        FlightInfo flightInfoToBeSaved = new FlightInfo();
-        BeanUtils.copyProperties(flightInfoDto, flightInfoToBeSaved);
-
+        FlightInfo flightInfoToBeSaved = FlightInfoMapper.makeFlightInfoEntityFromDTO(flightInfoDto);
         given(flightInfoRepository.getFlightByKey(KEY))
                 .willReturn(Optional.empty());
         given(externalServiceClient.getFlightsInformationByTailNumber(TAIL_NUMBER))
@@ -155,9 +176,28 @@ public class FlightInfoServiceImplTest {
                 flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER);
         //then
         assert (serviceResponse.isPresent());
-        verify(flightInfoRepository, times(1)).save(KEY, flightInfoToBeSaved);
+        verify(flightInfoRepository).save(KEY, flightInfoToBeSaved);
     }
 
+    /**
+     * Test When flight information isn't in cache it should call an external service once.
+     */
+    @Test
+    public void shouldGetFlightInfoByTailAndFlightNumberQueryExternalService_WhenIsNotInCache() {
+        //given
+        given(flightInfoRepository.getFlightByKey(KEY))
+                .willReturn(Optional.empty());
+
+        //When
+        Optional<FlightInfoDTO> serviceResponse =
+                flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER);
+        //then
+        verify(externalServiceClient).getFlightsInformationByTailNumber(TAIL_NUMBER);
+    }
+
+    /**
+     * Test When flight information is absent from both cache and external service it should return Optional.empty
+     */
     @Test
     public void shouldGetFlightInfoByTailAndFlightNumberReturnOptionalEmpty_WhenIsNotInCacheNorExternalService() {
         //given
@@ -174,41 +214,22 @@ public class FlightInfoServiceImplTest {
         Assertions.assertThat(serviceResponse).isEqualTo(Optional.empty());
     }
 
-    @Test
-    public void shouldGetFlightInfoByTailAndFlightNumberQueryExternalService_WhenIsNotInCache() {
-        //given
-        given(flightInfoRepository.getFlightByKey(KEY))
-                .willReturn(Optional.empty());
-        given(externalServiceClient.getFlightsInformationByTailNumber(TAIL_NUMBER))
-                .willReturn(Collections.emptyList());
-
-        //When
-        Optional<FlightInfoDTO> serviceResponse =
-                flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER);
-        //then
-        verify(flightInfoRepository, times(1)).getFlightByKey(KEY);
-    }
-
-    @Test
-    public void shouldGetFlightInfoByTailAndFlightNumberSaveInCache_WhenFlightInfoIsGottenFromExternalService() {
-        //given
-        FlightInfoDTO flightInfoDto = getOneFlightInfoDto();
-        FlightInfo flightInfoToBeSaved = new FlightInfo();
-        BeanUtils.copyProperties(flightInfoDto, flightInfoToBeSaved);
-        given(flightInfoRepository.getFlightByKey(KEY))
-                .willReturn(Optional.empty());
-        given(externalServiceClient.getFlightsInformationByTailNumber(TAIL_NUMBER))
-                .willReturn(Arrays.asList(flightInfoDto));
-
-        //When
-        Optional<FlightInfoDTO> serviceResponse =
-                flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER);
-        //then
-        verify(flightInfoRepository, times(1)).save(KEY, flightInfoToBeSaved);
-    }
-
-
+    /**
+     * Creates a complete FlightInfoDTO mocked
+     * @return FlightInfoDTO
+     */
     private FlightInfoDTO getOneFlightInfoDto() {
+        AirportDTO airportOriginOne = new AirportDTO();
+        airportOriginOne.setCode("GCXO");
+        airportOriginOne.setCity("Tenerife");
+        airportOriginOne.setAlternateIdent("TFN");
+        airportOriginOne.setAirportName("Tenerife North (Los Rodeos)");
+        AirportDTO airportDestinationOne = new AirportDTO();
+        airportDestinationOne.setCode("GCGM");
+        airportDestinationOne.setCity("La Gomera");
+        airportDestinationOne.setAlternateIdent("GMZ");
+        airportDestinationOne.setAirportName("La Gomera");
+
         FlightInfoDTO flightInfoEntity = new FlightInfoDTO();
         flightInfoEntity.setIdent("IBB653");
         flightInfoEntity.setFaFlightID("IBB653-1581399936-airline-0136");
@@ -221,9 +242,18 @@ public class FlightInfoServiceImplTest {
         flightInfoEntity.setBlocked(false);
         flightInfoEntity.setCancelled(false);
         flightInfoEntity.setDiverted(false);
+        flightInfoEntity.setOrigin(airportOriginOne);
+        flightInfoEntity.setDestination(airportDestinationOne);
+
         return flightInfoEntity;
     }
 
+    /**
+     * Creates a minimal FlightInfoDTO mocked with only tailNumber and flightNumber
+     * @param tailNumber
+     * @param flightNumber
+     * @return FlightInfoDTO
+     */
     private FlightInfoDTO getMinimalFlightInfo(String tailNumber, String flightNumber) {
         FlightInfoDTO flightInfoEntity = new FlightInfoDTO();
         flightInfoEntity.setTailNumber(tailNumber);

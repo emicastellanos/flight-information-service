@@ -22,6 +22,9 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.mockito.Mockito.when;
 
 
+/**
+ * Unit tests for {@link FlightInfoControllerImpl}.
+ */
 @SpringBootTest(classes = FlightInfoControllerImpl.class)
 @AutoConfigureWebMvc
 @AutoConfigureMockMvc
@@ -37,6 +40,9 @@ public class FlightInfoControllerImplTest {
     @Autowired
     private MockMvc mockMvc;
 
+    /**
+     * Test When querying endpoint and the flightInfo is found it should return 200 code
+     */
     @Test
     public void obtainFlightInfo() {
         //given
@@ -52,9 +58,12 @@ public class FlightInfoControllerImplTest {
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .extract().body().as(FlightInfo.class).equals(flightInfoDto);
+                .extract().body().as(FlightInfoDTO.class).equals(flightInfoDto);
     }
 
+    /**
+     * Test When querying endpoint and flightInfo isn't found it should return 404 code
+     */
     @Test
     public void obtainFlightInfoEmpty_WhenIsNotFound() {
         //given
