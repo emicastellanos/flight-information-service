@@ -22,19 +22,15 @@ public class FlightInfoControllerImpl implements FlightInfoController {
 
     @Override
     public ResponseEntity<FlightInfoDTO> obtainFlightInfo(String tailNumber, String flightNumber) {
-        logger.info("obtain flight info");
+        logger.info("controller: obtain flight info");
         Optional<FlightInfoDTO> flight = flightInfoService.getByTailNumberAndFlightNumber(tailNumber, flightNumber);
 
-        if (!flight.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(flight.get());
+        return ResponseEntity.of(flight);
     }
 
     @Override
     public ResponseEntity<List<FlightInfoDTO>> getAll(){
-        logger.info("get all method");
+        logger.info("controller: get all info");
         List<FlightInfoDTO> flights = flightInfoService.getAll();
         return ResponseEntity.ok(flights);
     }
