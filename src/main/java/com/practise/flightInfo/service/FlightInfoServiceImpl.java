@@ -1,5 +1,6 @@
 package com.practise.flightInfo.service;
 
+import com.practise.flightInfo.mapper.FlightInfoMapper;
 import com.practise.flightInfo.model.dto.FlightInfoDTO;
 import com.practise.flightInfo.model.entity.FlightInfo;
 import com.practise.flightInfo.repository.FlightInfoRepository;
@@ -18,6 +19,9 @@ import java.util.stream.Stream;
 @Service
 public class FlightInfoServiceImpl implements FlightInfoService {
     private static final Logger logger = LoggerFactory.getLogger(FlightInfoServiceImpl.class);
+    /**
+     * The key for persisting in database
+     */
     private static final String KEY_FORMAT = "%s-%s";
 
     private final FlightInfoRepository flightInformationRepository;
@@ -29,6 +33,7 @@ public class FlightInfoServiceImpl implements FlightInfoService {
         this.flightInformationRepository = flightInformationRepository;
         this.externalServiceClient = externalServiceClient;
     }
+
 
     @Override
     public void save(final String key, final FlightInfo flightInfo) {
@@ -42,19 +47,19 @@ public class FlightInfoServiceImpl implements FlightInfoService {
         Optional<FlightInfo> flightEntity = flightInformationRepository.getFlightByKey(key);
 
         if (flightEntity.isPresent()) {
-            FlightInfoDTO flightInfoDTO = new FlightInfoDTO();
-            BeanUtils.copyProperties(flightEntity.get(), flightInfoDTO);
+            FlightInfoDTO flightInfoDTO = FlightInfoMapper.makeFlightInfoDtoFromEntity(flightEntity.get());
             return Optional.of(flightInfoDTO);
         }
 
-        logger.info("service: not found in cache key:" + key);
+        logger.info("service: not found in cache key:" + key + " searching in external service");
         Optional<FlightInfoDTO> flightFromService = getFlightInfoFromExternalService(tailNumber, flightNumber);
 
         if (flightFromService.isPresent()) {
-            FlightInfo flightInfo = new FlightInfo();
-            BeanUtils.copyProperties(flightFromService.get(), flightInfo);
+            logger.info("service: saving flight info found with key:" + key);
+            FlightInfo flightInfo = FlightInfoMapper.makeFlightInfoEntityFromDTO(flightFromService.get());
             save(key, flightInfo);
         }
+
         return flightFromService;
     }
 
@@ -71,6 +76,14 @@ public class FlightInfoServiceImpl implements FlightInfoService {
         return String.format(KEY_FORMAT, tailNumber, flightNumber);
     }
 
+    /**
+     * Searches in external service for a given tailNumber and filters the response by a given flightNumber
+     *
+     * @param tailNumber
+     * @param flightNumber
+     *
+     * @return Optional<FlightInfoDto>
+     */
     private Optional<FlightInfoDTO> getFlightInfoFromExternalService(final String tailNumber, final String flightNumber) {
         List<FlightInfoDTO> flightsResponse = externalServiceClient.getFlightsInformationByTailNumber(tailNumber);
 

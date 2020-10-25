@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-@Api(value = "Flight Information Controller", description = "REST API for caching Flights Information")
+/**
+ * Operations querying flights information will be routed by this controller.
+ * <p/>
+ */
+@Api(value = "Flight Information Controller", tags = "REST API FOR CACHING FLIGHTS INFORMATION")
 public interface FlightInfoController {
 
     @ApiOperation(value = "Information about a given flight is gotten from cache or from external service and saved in cache afterwards, by tail number and flight number",
