@@ -1,26 +1,19 @@
-package com.practise.flightInfo.model;
+package com.practise.flightInfo.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @RedisHash("Airport")
-//@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class AirportDTO implements Serializable {
-    @JsonProperty("code")
+public class Airport implements Serializable {
     private String code;
-    @JsonProperty("city")
     private String city;
-    @JsonProperty("alternate_ident")
     private String alternateIdent;
-    @JsonProperty("airport_name")
     private String airportName;
+
+    public Airport() {
+    }
 
     public String getCode() {
         return code;
@@ -57,15 +50,16 @@ public class AirportDTO implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AirportDTO)) return false;
-        AirportDTO that = (AirportDTO) o;
+        if (!(o instanceof Airport)) return false;
+        Airport that = (Airport) o;
         return Objects.equals(getCode(), that.getCode()) &&
                 Objects.equals(getCity(), that.getCity()) &&
+                Objects.equals(getAlternateIdent(), that.getAlternateIdent()) &&
                 Objects.equals(getAirportName(), that.getAirportName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCode(), getCity(), getAirportName());
+        return Objects.hash(getCode(), getCity(), getAlternateIdent(), getAirportName());
     }
 }

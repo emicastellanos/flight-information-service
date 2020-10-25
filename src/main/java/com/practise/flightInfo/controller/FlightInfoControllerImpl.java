@@ -1,6 +1,6 @@
 package com.practise.flightInfo.controller;
 
-import com.practise.flightInfo.model.FlightInfoDTO;
+import com.practise.flightInfo.model.dto.FlightInfoDTO;
 import com.practise.flightInfo.service.FlightInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

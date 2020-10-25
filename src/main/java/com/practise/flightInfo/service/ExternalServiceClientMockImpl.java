@@ -1,7 +1,7 @@
 package com.practise.flightInfo.service;
 
 import com.practise.flightInfo.mock.MockService;
-import com.practise.flightInfo.model.FlightInfoDTO;
+import com.practise.flightInfo.model.dto.FlightInfoDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

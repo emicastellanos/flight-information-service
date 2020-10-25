@@ -1,6 +1,8 @@
 package com.practise.flightInfo.repository;
 
-import com.practise.flightInfo.model.FlightInfoDTO;
+import com.practise.flightInfo.model.entity.FlightInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,27 +12,27 @@ import java.util.Optional;
 
 @Repository
 public class FlightInfoRepositoryImpl implements FlightInfoRepository {
+    private static final Logger logger = LoggerFactory.getLogger(FlightInfoRepositoryImpl.class);
 
     @Autowired
     private RedisTemplate redisTemplate;
 
-    //private HashOperations hashOperations;
-
     @Override
-    public void save(String key, FlightInfoDTO flightInfoDTO) {
-        redisTemplate.opsForHash().put("FLIGHTS", key, flightInfoDTO);
+    public void save(String key, FlightInfo flightInfo) {
+        redisTemplate.opsForHash().put("FLIGHTS", key, flightInfo);
     }
 
     @Override
-    public List<FlightInfoDTO> getAll() {
-        return (List<FlightInfoDTO>) redisTemplate.opsForHash().values("FLIGHTS");
+    public List<FlightInfo> getAll() {
+        return (List<FlightInfo>) redisTemplate.opsForHash().values("FLIGHTS");
     }
 
     @Override
-    public Optional<FlightInfoDTO> getFlightByKey(String key) {
+    public Optional<FlightInfo> getFlightByKey(String key) {
+        logger.info("repository: searching key: " + key);
         Object result = redisTemplate.opsForHash().get("FLIGHTS", key);
         if (result == null) return Optional.empty();
 
-        return Optional.of((FlightInfoDTO) result);
+        return Optional.of((FlightInfo) result);
     }
 }

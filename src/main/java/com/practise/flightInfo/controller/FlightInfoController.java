@@ -1,6 +1,6 @@
 package com.practise.flightInfo.controller;
 
-import com.practise.flightInfo.model.FlightInfoDTO;
+import com.practise.flightInfo.model.dto.FlightInfoDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

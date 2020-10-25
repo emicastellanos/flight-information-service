@@ -1,39 +1,39 @@
 package com.practise.flightInfo.mock;
 
-import com.practise.flightInfo.model.FlightInfoDTO;
+import com.practise.flightInfo.model.dto.FlightInfoDTO;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MockService {
     public static List<FlightInfoDTO> getFlightByTailNumber(String tailNumber) {
-        FlightInfoDTO flightInfoDTO = new FlightInfoDTO();
-        flightInfoDTO.setIdent("IBB653");
-        flightInfoDTO.setFaFlightID("IBB653-1581399936-airline-0136");
-        flightInfoDTO.setAirlineIata("NT");
-        flightInfoDTO.setAirline("IBB");
-        flightInfoDTO.setTailNumber("EC-MYT");
-        flightInfoDTO.setFlightNumber("653");
-        flightInfoDTO.setType("Form_Airline");
-        flightInfoDTO.setCodeshares("IBE123");
-        flightInfoDTO.setBlocked(false);
-        flightInfoDTO.setCancelled(false);
-        flightInfoDTO.setDiverted(false);
+        FlightInfoDTO flightInfoEntity = new FlightInfoDTO();
+        flightInfoEntity.setIdent("IBB653");
+        flightInfoEntity.setFaFlightID("IBB653-1581399936-airline-0136");
+        flightInfoEntity.setAirlineIata("NT");
+        flightInfoEntity.setAirline("IBB");
+        flightInfoEntity.setTailNumber("EC-MYT");
+        flightInfoEntity.setFlightNumber("653");
+        flightInfoEntity.setType("Form_Airline");
+        flightInfoEntity.setCodeshares("IBE123");
+        flightInfoEntity.setBlocked(false);
+        flightInfoEntity.setCancelled(false);
+        flightInfoEntity.setDiverted(false);
 
-        FlightInfoDTO flightInfoDTO2 = new FlightInfoDTO();
-        flightInfoDTO2.setIdent("IBB653");
-        flightInfoDTO2.setFaFlightID("IBB653-1581399936-airline-0136");
-        flightInfoDTO2.setAirlineIata("NT");
-        flightInfoDTO2.setAirline("IBB");
-        flightInfoDTO2.setTailNumber("EC-MYT");
-        flightInfoDTO2.setFlightNumber("123");
-        flightInfoDTO2.setType("Form_Airline");
-        flightInfoDTO2.setCodeshares("IBE123");
-        flightInfoDTO2.setBlocked(false);
-        flightInfoDTO2.setCancelled(false);
-        flightInfoDTO2.setDiverted(false);
+        FlightInfoDTO flightInfoEntity2 = new FlightInfoDTO();
+        flightInfoEntity2.setIdent("IBB653");
+        flightInfoEntity2.setFaFlightID("IBB653-1581399936-airline-0136");
+        flightInfoEntity2.setAirlineIata("NT");
+        flightInfoEntity2.setAirline("IBB");
+        flightInfoEntity2.setTailNumber("EC-MYT");
+        flightInfoEntity2.setFlightNumber("123");
+        flightInfoEntity2.setType("Form_Airline");
+        flightInfoEntity2.setCodeshares("IBE123");
+        flightInfoEntity2.setBlocked(false);
+        flightInfoEntity2.setCancelled(false);
+        flightInfoEntity2.setDiverted(false);
 
 
-        return Arrays.asList(flightInfoDTO, flightInfoDTO2);
+        return Arrays.asList(flightInfoEntity, flightInfoEntity2);
     }
 }

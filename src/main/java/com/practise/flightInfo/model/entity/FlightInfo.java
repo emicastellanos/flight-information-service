@@ -1,42 +1,28 @@
-package com.practise.flightInfo.model;
+package com.practise.flightInfo.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @RedisHash("FlightInformation")
-//@Data
-@NoArgsConstructor
-public class FlightInfoDTO implements Serializable {
-    @JsonProperty("ident")
+public class FlightInfo implements Serializable {
     private String ident;
-    @JsonProperty("faFlightID")
     private String faFlightID;
-    @JsonProperty("airline")
     private String airline;
-    @JsonProperty("airline_iata")
     private String airlineIata;
-    @JsonProperty("flightnumber")
     private String flightNumber;
-    @JsonProperty("tailnumber")
     private String tailNumber;
-    @JsonProperty("type")
     private String type;
-    @JsonProperty("codeshares")
     private String codeshares;
-    @JsonProperty("blocked")
     private Boolean blocked;
-    @JsonProperty("diverted")
     private Boolean diverted;
-    @JsonProperty("cancelled")
     private Boolean cancelled;
-    @JsonProperty("origin")
-    private AirportDTO origin;
-    @JsonProperty("destination")
-    private AirportDTO destination;
+    private Airport origin;
+    private Airport destination;
+
+    public FlightInfo() {
+    }
 
     public String getIdent() {
         return ident;
@@ -126,37 +112,44 @@ public class FlightInfoDTO implements Serializable {
         this.cancelled = cancelled;
     }
 
-    public AirportDTO getOrigin() {
+    public Airport getOrigin() {
         return origin;
     }
 
-    public void setOrigin(AirportDTO origin) {
+    public void setOrigin(Airport origin) {
         this.origin = origin;
     }
 
-    public AirportDTO getDestination() {
+    public Airport getDestination() {
         return destination;
     }
 
-    public void setDestination(AirportDTO destination) {
+    public void setDestination(Airport destination) {
         this.destination = destination;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FlightInfoDTO)) return false;
-        FlightInfoDTO that = (FlightInfoDTO) o;
-        return getIdent().equals(that.getIdent()) &&
+        if (!(o instanceof FlightInfo)) return false;
+        FlightInfo that = (FlightInfo) o;
+        return Objects.equals(getIdent(), that.getIdent()) &&
+                Objects.equals(getFaFlightID(), that.getFaFlightID()) &&
                 Objects.equals(getAirline(), that.getAirline()) &&
+                Objects.equals(getAirlineIata(), that.getAirlineIata()) &&
                 Objects.equals(getFlightNumber(), that.getFlightNumber()) &&
                 Objects.equals(getTailNumber(), that.getTailNumber()) &&
+                Objects.equals(getType(), that.getType()) &&
+                Objects.equals(getCodeshares(), that.getCodeshares()) &&
+                Objects.equals(getBlocked(), that.getBlocked()) &&
+                Objects.equals(getDiverted(), that.getDiverted()) &&
+                Objects.equals(getCancelled(), that.getCancelled()) &&
                 Objects.equals(getOrigin(), that.getOrigin()) &&
                 Objects.equals(getDestination(), that.getDestination());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdent(), getAirline(), getFlightNumber(), getTailNumber(), getOrigin(), getDestination());
+        return Objects.hash(getIdent(), getFaFlightID(), getAirline(), getAirlineIata(), getFlightNumber(), getTailNumber(), getType(), getCodeshares(), getBlocked(), getDiverted(), getCancelled(), getOrigin(), getDestination());
     }
 }

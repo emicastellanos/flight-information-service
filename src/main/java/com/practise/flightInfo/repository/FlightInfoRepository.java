@@ -1,15 +1,15 @@
 package com.practise.flightInfo.repository;
 
-import com.practise.flightInfo.model.FlightInfoDTO;
+import com.practise.flightInfo.model.entity.FlightInfo;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface FlightInfoRepository {
 
-    void save(String key, FlightInfoDTO flightInfoDTO);
+    void save(String key, FlightInfo flightInfo);
 
-    List<FlightInfoDTO> getAll();
+    List<FlightInfo> getAll();
 
-    Optional<FlightInfoDTO> getFlightByKey(String key);
+    Optional<FlightInfo> getFlightByKey(String key);
 }

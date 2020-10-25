@@ -1,9 +1,9 @@
 package com.practise.flightInfo.controller;
 
 
-import com.practise.flightInfo.model.FlightInfoDTO;
+import com.practise.flightInfo.model.dto.FlightInfoDTO;
+import com.practise.flightInfo.model.entity.FlightInfo;
 import com.practise.flightInfo.service.FlightInfoService;
-import io.restassured.http.ContentType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +41,9 @@ public class FlightInfoControllerImplTest {
     public void obtainFlightInfo() {
         //given
         String validPath = String.format(PATH, TAIL_NUMBER, FLIGHT_NUMBER);
-        FlightInfoDTO flightInfoDTO = new FlightInfoDTO();
+        FlightInfoDTO flightInfoDto = new FlightInfoDTO();
         when(flightInfoService.getByTailNumberAndFlightNumber(TAIL_NUMBER, FLIGHT_NUMBER))
-                .thenReturn(Optional.of(flightInfoDTO));
+                .thenReturn(Optional.of(flightInfoDto));
 
         //when
         given().mockMvc(mockMvc)
@@ -52,7 +52,7 @@ public class FlightInfoControllerImplTest {
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .extract().body().as(FlightInfoDTO.class).equals(flightInfoDTO);
+                .extract().body().as(FlightInfo.class).equals(flightInfoDto);
     }
 
     @Test

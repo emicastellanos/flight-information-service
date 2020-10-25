@@ -1,6 +1,6 @@
 package com.practise.flightInfo.service;
 
-import com.practise.flightInfo.model.FlightInfoDTO;
+import com.practise.flightInfo.model.dto.FlightInfoDTO;
 
 import java.util.List;
 
