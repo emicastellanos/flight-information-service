@@ -17,8 +17,13 @@ import java.util.Optional;
 public class FlightInfoControllerImpl implements FlightInfoController {
     private static final Logger logger = LoggerFactory.getLogger(FlightInfoControllerImpl.class);
 
+    private final FlightInfoService flightInfoService;
+
     @Autowired
-    private FlightInfoService flightInfoService;
+    private FlightInfoControllerImpl(final FlightInfoService flightInfoService){
+        this.flightInfoService = flightInfoService;
+    }
+
 
     @Override
     public ResponseEntity<FlightInfoDTO> obtainFlightInfo(String tailNumber, String flightNumber) {
@@ -29,7 +34,7 @@ public class FlightInfoControllerImpl implements FlightInfoController {
     }
 
     @Override
-    public ResponseEntity<List<FlightInfoDTO>> getAll(){
+    public ResponseEntity<List<FlightInfoDTO>> getAll() {
         logger.info("controller: get all info");
         List<FlightInfoDTO> flights = flightInfoService.getAll();
         return ResponseEntity.ok(flights);

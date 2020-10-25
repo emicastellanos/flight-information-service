@@ -14,8 +14,12 @@ import java.util.Optional;
 public class FlightInfoRepositoryImpl implements FlightInfoRepository {
     private static final Logger logger = LoggerFactory.getLogger(FlightInfoRepositoryImpl.class);
 
+    private final RedisTemplate redisTemplate;
+
     @Autowired
-    private RedisTemplate redisTemplate;
+    public FlightInfoRepositoryImpl(final RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public void save(String key, FlightInfo flightInfo) {
