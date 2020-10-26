@@ -47,6 +47,7 @@ public class FlightInfoServiceImpl implements FlightInfoService {
         Optional<FlightInfo> flightEntity = flightInformationRepository.getFlightByKey(key);
 
         if (flightEntity.isPresent()) {
+            logger.info("service: found in cache key:" + key);
             FlightInfoDTO flightInfoDTO = FlightInfoMapper.makeFlightInfoDtoFromEntity(flightEntity.get());
             return Optional.of(flightInfoDTO);
         }
@@ -70,7 +71,6 @@ public class FlightInfoServiceImpl implements FlightInfoService {
         BeanUtils.copyProperties(flightInfoList, flightInfoDTOList);
         return flightInfoDTOList;
     }
-
 
     private String generateKey(final String tailNumber, final String flightNumber) {
         return String.format(KEY_FORMAT, tailNumber, flightNumber);

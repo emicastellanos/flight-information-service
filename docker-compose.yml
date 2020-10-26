@@ -3,24 +3,21 @@ services:
   app:
     build:
       context: .
+    container_name: flight_information_app
     ports:
-      - "8080:8080"
-    depends_on:
-      - redis
-    #links:
-    #  - "db:redis"
+      - 8080:8080
     networks:
       - spring
   redis:
     image: 'redis:alpine'
-    hostname:
-      redis
+    container_name: flight_information_redis
     ports:
-      - "6379:6379"
+      - 6379:6379
     networks:
       - spring
   mockServer:
     image: mockserver/mockserver:mockserver-5.11.1
+    container_name: mock-server
     ports:
       - 1080:1080
     environment:
@@ -30,8 +27,8 @@ services:
       - type: bind
         source: .
         target: /config
+    networks:
+      - spring
 networks:
   spring:
-#    external:
-#      name: spring
-    #driver: bridge
+    driver: "bridge"

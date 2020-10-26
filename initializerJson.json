@@ -1,0 +1,170 @@
+[
+  {
+    "httpRequest": {
+      "path": "/v1/flight-information-tail/EC-MYT"
+    },
+    "httpResponse": {
+      "body": [
+        {
+          "ident": "IBB653",
+          "faFlightID": "IBB653-1581399936-airline-0136",
+          "airline": "IBB",
+          "airline_iata": "NT",
+          "flightnumber": "653",
+          "tailnumber": "EC-MYT",
+          "type": "Form_Airline",
+          "codeshares": "IBE123",
+          "blocked": false,
+          "diverted": false,
+          "cancelled": false,
+          "origin": {
+            "code": "GCXO",
+            "city": "Tenerife",
+            "alternate_ident": "TFN",
+            "airport_name": "Tenerife North (Los Rodeos)"
+          },
+          "destination": {
+            "code": "GCGM",
+            "city": "La Gomera",
+            "alternate_ident": "GMZ",
+            "airport_name": "La Gomera"
+          }
+        },
+        {
+          "ident": "IBB123",
+          "faFlightID": "IBB123-158112333936-airline-0136",
+          "airline": "IBB",
+          "airline_iata": "NT",
+          "flightnumber": "123",
+          "tailnumber": "EC-MYT",
+          "type": "Form_Airline",
+          "codeshares": "IBE123",
+          "blocked": false,
+          "diverted": false,
+          "cancelled": false,
+          "origin": {
+            "code": "LCGX",
+            "city": "Galicia",
+            "alternate_ident": "LCG",
+            "airport_name": "Aeropuerto de La Coruña"
+          },
+          "destination": {
+            "code": "REUX",
+            "city": "Reus",
+            "alternate_ident": "REU",
+            "airport_name": "Aeropuerto de Reus"
+          }
+        },
+        {
+          "ident": "IBB777",
+          "faFlightID": "IBB777-1581378936-airline-0136",
+          "airline": "IBB",
+          "airline_iata": "NT",
+          "flightnumber": "777",
+          "tailnumber": "EC-MYT",
+          "type": "Form_Airline",
+          "codeshares": "IBE777",
+          "blocked": false,
+          "diverted": true,
+          "cancelled": false,
+          "origin": {
+            "code": "BBCN",
+            "city": "Barcelona",
+            "alternate_ident": "BCN",
+            "airport_name": "Aeropuerto Josep Tarradellas Barcelona-El Prat"
+          },
+          "destination": {
+            "code": "GGRX",
+            "city": "Granada",
+            "alternate_ident": "GRX",
+            "airport_name": "Aeropuerto Federico Garcia Lorca Granada-Jaen"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "httpRequest": {
+      "path": "/v1/flight-information-tail/AB-CDE"
+    },
+    "httpResponse": {
+      "body": [
+        {
+          "ident": "IBB653",
+          "faFlightID": "IBB653-22222222222-airline-0222",
+          "airline": "IBB",
+          "airline_iata": "NT",
+          "flightnumber": "123",
+          "tailnumber": "AB-CDE",
+          "type": "Form_Airline",
+          "codeshares": "IBE123",
+          "blocked": false,
+          "diverted": false,
+          "cancelled": false,
+          "origin": {
+            "code": "GCXO",
+            "city": "Tenerife",
+            "alternate_ident": "TFN",
+            "airport_name": "Tenerife North (Los Rodeos)"
+          },
+          "destination": {
+            "code": "LCGX",
+            "city": "Galicia",
+            "alternate_ident": "LCG",
+            "airport_name": "Aeropuerto de La Coruña"
+          }
+        },
+        {
+          "ident": "IBB123",
+          "faFlightID": "IBB123-111111111111-airline-0111",
+          "airline": "IBB",
+          "airline_iata": "NT",
+          "flightnumber": "456",
+          "tailnumber": "AB-CDE",
+          "type": "Form_Airline",
+          "codeshares": "IBE123",
+          "blocked": false,
+          "diverted": false,
+          "cancelled": false,
+          "origin": {
+            "code": "LCGX",
+            "city": "Galicia",
+            "alternate_ident": "LCG",
+            "airport_name": "Aeropuerto de La Coruña"
+          },
+          "destination": {
+            "code": "BBCN",
+            "city": "Barcelona",
+            "alternate_ident": "BCN",
+            "airport_name": "Aeropuerto Josep Tarradellas Barcelona-El Prat"
+          }
+        },
+        {
+          "ident": "IBB777",
+          "faFlightID": "IBB777-1581378936-airline-0136",
+          "airline": "IBB",
+          "airline_iata": "NT",
+          "flightnumber": "777",
+          "tailnumber": "AB-CDE",
+          "type": "Form_Airline",
+          "codeshares": "IBE777",
+          "blocked": false,
+          "diverted": true,
+          "cancelled": false,
+          "origin": {
+            "code": "BBCN",
+            "city": "Barcelona",
+            "alternate_ident": "BCN",
+            "airport_name": "Aeropuerto Josep Tarradellas Barcelona-El Prat"
+          },
+          "destination": {
+            "code": "GGRX",
+            "city": "Granada",
+            "alternate_ident": "GRX",
+            "airport_name": "Aeropuerto Federico Garcia Lorca Granada-Jaen"
+          }
+        }
+      ]
+    }
+  }
+]
