@@ -47,9 +47,31 @@ $ docker-compose up
 This application comes with swagger facilities so you can access 
 http://localhost:8080/swagger-ui.html 
 and query from there or simple try with
+http://localhost:8080/v1/flight-information/{tail-number}/{flight-number}
+example:
 http://localhost:8080/v1/flight-information/EC-MYT/653
-http://localhost:8080/swagger-ui.html 
-and query from there or simple try with 
+
+This application uses mockServer for mocking a external service, it's possible to create new responses modifying the file initializerJson.json 
+which can be found in the root folder of the project.
+Just adding a new path in 
+
+```
+"httpRequest": {
+      "path": "/v1/flight-information-tail/{tail-number-mocked}"
+    },
+```
+
+And creating then a list as a response:
+```
+"httpResponse": {
+      "body": [{
+        ....
+      }]
+```
+
+
+
+
 
 
 
